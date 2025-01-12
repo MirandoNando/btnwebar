@@ -96,7 +96,7 @@
     <script src="arcamera.js" type="text/javascript"></script>
     <script src="wtracker.js" type="text/javascript"></script>
     <script src="itracker.js" type="text/javascript"></script>
-    <script src="Build/webar.loader.js"></script>
+    <script src="Build/btnwebar.loader.js"></script>
     <script>
         var initialize = async() =>{
             var unityCanvas = document.querySelector("#unity-canvas");
@@ -161,11 +161,11 @@
             document.getElementById('startARDiv').style.display = 'none';
             loadingPage.style.display = "flex"
             createUnityInstance(document.querySelector("#unity-canvas"), {
-                    dataUrl: "Build/webar.data.unityweb",
-                    frameworkUrl: "Build/webar.framework.js.unityweb",
-                    codeUrl: "Build/webar.wasm.unityweb",
+                    dataUrl: "Build/btnwebar.data.unityweb",
+                    frameworkUrl: "Build/btnwebar.framework.js.unityweb",
+                    codeUrl: "Build/btnwebar.wasm.unityweb",
                     streamingAssetsUrl: "StreamingAssets",
-                    companyName: "DefaultCompany",
+                    companyName: "MonsterAR",
                     productName: "btn-arliving-web",
                     productVersion: "0.1.0",
                     //webglContextAttributes: { "preserveDrawingBuffer": true },
