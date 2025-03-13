@@ -161,13 +161,13 @@
             document.getElementById('startARDiv').style.display = 'none';
             loadingPage.style.display = "flex"
             createUnityInstance(document.querySelector("#unity-canvas"), {
-                    dataUrl: "Build/btnwebar.data.unityweb",
-                    frameworkUrl: "Build/btnwebar.framework.js.unityweb",
-                    codeUrl: "Build/btnwebar.wasm.unityweb",
+                    dataUrl: "Build/btnwebar.data",
+                    frameworkUrl: "Build/btnwebar.framework.js",
+                    codeUrl: "Build/btnwebar.wasm",
                     streamingAssetsUrl: "StreamingAssets",
                     companyName: "MonsterAR",
                     productName: "btn-arliving-web",
-                    productVersion: "0.2",
+                    productVersion: "0.3",
                     //webglContextAttributes: { "preserveDrawingBuffer": true },
                     // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
                     // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
@@ -349,7 +349,6 @@
             document.getElementById("screenshotImg").style.width = "80vw";
             document.getElementById("screenshotImg").style.height = 80 / window.innerWidth * window.innerHeight + "vw";
         }
-
         //GetPhotoScirpt
     var gameobject;
     function OpenGallery() {
@@ -368,7 +367,6 @@
           const reader = new FileReader();
           reader.onload = function (e) {
             const base64Data = e.target.result.split(',')[1]; // Ambil data base64 tanpa prefix
-
             console.log(gameobject);
             const fileExt = fileName.split('.').pop();
             console.log("file extension "+ fileExt)
@@ -376,16 +374,13 @@
             else unityInstance.SendMessage(gameobject, 'OnPhotoReceived', base64Data);
           };
           reader.readAsDataURL(file);
-
           //SendFileInfoToUnity
           SendMessageToUnity(fileName, fileSize);
         }
       };
       input.click();
     }
-
     var captureButton = document.getElementById("capture-button");
-
     function OpenCamera() {
       const video = document.createElement('video');
       video.setAttribute('autoplay', true);
@@ -398,15 +393,12 @@
       video.style.height = '100%';
       video.style.zIndex = '100'; // Supaya di atas elemen lain
       document.body.appendChild(video);
-
       navigator.mediaDevices.getUserMedia({ video: true })
         .then((stream) => {
           video.srcObject = stream;
-
           // Simpan stream dan video untuk fungsi capture
           window.unityCameraVideo = video;
           window.unityCameraStream = stream;
-
           captureButton.style.display = 'block'
           captureButton.addEventListener('click', function () {
             if (typeof CapturePhoto === 'function') {
@@ -420,7 +412,6 @@
           //SendMessage(gameObjectName, callbackName, "Error accessing camera: " + error.message);
         });
     }
-
     function CapturePhoto() {
       // Pastikan video telah diinisialisasi
       const video = window.unityCameraVideo;
@@ -429,33 +420,27 @@
         SendMessage(gameObjectName, callbackName, "Error: Camera is not initialized.");
         return;
       }
-
       // Buat elemen canvas untuk menangkap frame video
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
       // Konversi hasil capture ke Base64
       const base64Data = canvas.toDataURL('image/png').split(',')[1]; // Hanya ambil data setelah "data:image/png;base64,"
-
       // Kirim Base64 data ke Unity
       //SendMessage(gameObjectName, callbackName, base64Data);
       unityInstance.SendMessage(gameobject, 'OnPhotoReceived', base64Data);
-
       //SendFileInfoToUnity
       // Konversi ke Blob
       canvas.toBlob((blob) => {
         const fileName = "camera-capture.png";  // Nama default untuk foto
         const fileSize = blob.size;            // Ukuran blob dalam byte
-
         SendMessageToUnity(fileName, fileSize);
       }, "image/png");
       
       CloseCamera();
     }
-
     function CloseCamera() {
       // Hentikan kamera dan bersihkan elemen video
       const video = window.unityCameraVideo;
@@ -470,11 +455,9 @@
       window.unityCameraStream = null;
       captureButton.style.display = 'none'
     }
-
     function SendMessageToUnity(fileName, fileSize) {
       // Gabungkan nama file dan ukuran file dalam format yang dapat diurai
       const fileInfo = JSON.stringify({ name: fileName, size: fileSize });
-
       // Kirim data ke Unity
       if (unityInstance) {
         unityInstance.SendMessage(gameobject, 'OnFileInfoReceived', fileInfo);
@@ -482,7 +465,6 @@
         console.error("Unity instance is not available.");
       }
     }
-    //Komen
         
     </script>
 </body>
